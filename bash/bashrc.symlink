@@ -1,0 +1,2 @@
+# source the default environment settings
+source $HOME/.dotfiles/system/profile

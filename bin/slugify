@@ -1,0 +1,40 @@
+#!/bin/bash
+
+REMOVE="[,':()!\[\]]"
+REPLACE=""
+
+dir=$1
+if [ -z "$dir" ]; then
+  echo "no directory specified, working in $(pwd)"
+  dir=$(pwd)
+fi
+
+cd "$dir"
+for obj in *; do
+
+  if [ -d "$obj" ]; then
+    echo "Directory: $obj"
+    #$0 $obj
+  fi
+
+  # make object name all lower case
+  new="`echo $obj | tr '[A-Z]' '[a-z]'`"
+  
+  # strip REMOVE characters from name
+  new="${new//$REMOVE/}"
+
+  # replace whitespace with '.'
+  new="${new// /.}"
+  new="${new//../.}"
+  new="${new//.-./.}"
+  new="${new//&/and}"
+
+  #echo $new
+  mv -v "$obj" "$new"
+
+#  mv -v "$f" "`echo ${f// /.} | tr '[A-Z]' '[a-z]'`"
+
+#  mv -v "$f" "${f//.-./.}"; 
+
+done
+
