@@ -45,14 +45,6 @@ need_push () {
   fi
 }
 
-battery_status() {
-  if [ "$(uname -s)" == "Darwin" ]; then
-    if [[ $(sysctl -n hw.model) == *"Book"* ]]; then
-      $ZSH/bin/battery-status
-    fi
-  fi
-}
-
 user_and_host() {
   echo "%{$fg_bold[cyan]%}%n%{$reset_color%}@%{$fg_bold[magenta]%}%m%{$reset_color%}"
 }
@@ -65,7 +57,7 @@ prompt_and_stat() {
   echo "%(?.%{$fg_bold[green]%}.%{$fg_bold[red]%})❯%{$reset_color%} "
 }
 
-export PROMPT=$'\n$(battery_status)$(user_and_host) $(directory_name) $(git_dirty)$(need_push)\n$(prompt_and_stat)'
+export PROMPT=$'\n$(user_and_host) $(directory_name) $(git_dirty)$(need_push)\n$(prompt_and_stat)'
 set_prompt () {
   export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
 }
