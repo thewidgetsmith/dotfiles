@@ -1,2 +1,11 @@
 # source the default environment settings
 source $HOME/.dotfiles/system/profile
+
+# Stash your environment variables in ~/.bashrc.local. This means they'll stay
+# out of your main dotfiles repository (which may be public, like this one), but
+# you'll have access to them in your scripts.
+if [[ -a ~/.bashrc.local ]]
+then
+  source ~/.bashrc.local
+fi
+

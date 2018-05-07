@@ -30,12 +30,12 @@ do
   source $file
 done
 
-# Stash your environment variables in ~/.localrc. This means they'll stay out
-# of your main dotfiles repository (which may be public, like this one), but
+# Stash your environment variables in ~/.zshrc.local. This means they'll stay
+# out of your main dotfiles repository (which may be public, like this one), but
 # you'll have access to them in your scripts.
-if [[ -a ~/.localrc ]]
+if [[ -a ~/.zshrc.local ]]
 then
-  source ~/.localrc
+  source ~/.zshrc.local
 fi
 
 unset config_files
