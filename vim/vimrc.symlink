@@ -86,7 +86,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
-
+Plug 'vim-airline/vim-airline'
 Plug 'ctrlpvim/ctrlp.vim'
 
 " initialize plugin system
