@@ -56,7 +56,7 @@ if [ "$(uname -s)" == "Darwin" ]; then
 
 	# Run Homebrew through the Brewfile
 	echo "› brew bundle"
-	brew bundle
+	brew bundle --file=$ZSH/Brewfile
 
 elif [ "$(uname -s)" == "Linux" ]; then
   	# else if running on Linux, install.
