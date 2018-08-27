@@ -1,6 +1,7 @@
 cask_args appdir: '/Applications'
 
 brew 'ack'
+brew 'bfg'
 brew 'coreutils'
 brew 'ffmpeg'
 brew 'grc'
