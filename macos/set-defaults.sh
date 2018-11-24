@@ -31,16 +31,16 @@ defaults write com.apple.finder ShowSidebar -bool true
 defaults write com.apple.finder ShowPathbar -bool true
 
 # Blank the screen if pointer goes to the bottom-left hot corner.
-defaults write com.apple.dock wvous-bl-corner -int 10
-defaults write com.apple.dock wvous-bl-modifier -int 0
+#defaults write com.apple.dock wvous-bl-corner -int 10
+#defaults write com.apple.dock wvous-bl-modifier -int 0
 
 # Show Mission Control if pointer moves to top-left hot corner.
-defaults write com.apple.dock wvous-tl-corner -int 2
-defaults write com.apple.dock wvous-tl-modifier -int 0
+#defaults write com.apple.dock wvous-tl-corner -int 2
+#defaults write com.apple.dock wvous-tl-modifier -int 0
 
 # Show Desktop if pointer moves to bottom-right hot corner.
-defaults write com.apple.dock wvous-br-corner -int 4
-defaults write com.apple.dock wvous-br-modifier -int 0
+#defaults write com.apple.dock wvous-br-corner -int 4
+#defaults write com.apple.dock wvous-br-modifier -int 0
 
 # Show Notification Center if pointer moves to top-right hot corner.
 defaults write com.apple.dock wvous-tr-corner -int 12
@@ -58,3 +58,4 @@ defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
 defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
