@@ -31,23 +31,24 @@ defaults write com.apple.finder ShowSidebar -bool true
 defaults write com.apple.finder ShowPathbar -bool true
 
 # Blank the screen if pointer goes to the bottom-left hot corner.
-defaults write com.apple.dock wvous-bl-corner -int 10
-defaults write com.apple.dock wvous-bl-modifier -int 0
+#defaults write com.apple.dock wvous-bl-corner -int 10
+#defaults write com.apple.dock wvous-bl-modifier -int 0
 
 # Show Mission Control if pointer moves to top-left hot corner.
-defaults write com.apple.dock wvous-tl-corner -int 2
-defaults write com.apple.dock wvous-tl-modifier -int 0
+#defaults write com.apple.dock wvous-tl-corner -int 2
+#defaults write com.apple.dock wvous-tl-modifier -int 0
 
 # Show Desktop if pointer moves to bottom-right hot corner.
-defaults write com.apple.dock wvous-br-corner -int 4
-defaults write com.apple.dock wvous-br-modifier -int 0
+#defaults write com.apple.dock wvous-br-corner -int 4
+#defaults write com.apple.dock wvous-br-modifier -int 0
 
 # Show Notification Center if pointer moves to top-right hot corner.
 defaults write com.apple.dock wvous-tr-corner -int 12
 defaults write com.apple.dock wvous-tr-modifier -int 0
 
 # Change screenshot location
-defaults write com.apple.screencapture location ~/Pictures
+mkdir -p ~/Pictures/Screenshots
+defaults write com.apple.screencapture location ~/Pictures/Screenshots
 
 # Hide Safari's bookmark bar.
 defaults write com.apple.Safari ShowFavoritesBar -bool false

@@ -58,6 +58,14 @@ if [ "$(uname -s)" == "Darwin" ]; then
 	echo "› brew bundle"
 	brew bundle --file=$ZSH/Brewfile
 
+	echo "› brew prune"
+	brew prune
+
+	echo "› brew cleanup"
+	brew cleanup \
+		&& brew doctor \
+		&& brew cask doctor
+
 elif [ "$(uname -s)" == "Linux" ]; then
   	# else if running on Linux, install.
   	echo "installing Linux dependencies"
