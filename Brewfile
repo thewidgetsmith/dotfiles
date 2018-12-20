@@ -9,7 +9,7 @@ brew 'geoip'
 brew 'grc'
 brew 'hh'
 brew 'htop'
-brew 'hub'e
+brew 'hub'
 brew 'jq'
 brew 'libgit2'
 brew 'libressl'
