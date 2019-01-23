@@ -10,9 +10,9 @@
         rank-contributors = !$ZSH/bin/git-rank-contributors
         count   = !git shortlog -sn
 
-	# git change-commits GIT_COMMITTER_NAME "old name" "new name"
-	# https://github.com/brauliobo/gitconfig/blob/master/configs/.gitconfig
-	change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ \\\"$`echo $VAR`\\\" = '$OLD' ]]; then export $VAR='$NEW'; fi\" $@; }; f "
+        # git change-commits GIT_COMMITTER_NAME "old name" "new name"
+        # https://github.com/brauliobo/gitconfig/blob/master/configs/.gitconfig
+        change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ \\\"$`echo $VAR`\\\" = '$OLD' ]]; then export $VAR='$NEW'; fi\" $@; }; f "
 
 [color]
         diff = auto
@@ -20,7 +20,7 @@
         branch = auto
         ui = true
 [core]
-	excludesfile = ~/.gitignore
+        excludesfile = ~/.gitignore
         editor = vim
 [apply]
         whitespace = nowarn
@@ -35,12 +35,6 @@
         # for more information on different options of the below setting.
         #
         # Setting to git 2.0 default to suppress warning message
-	default = simple
+        default = simple
 [commit]
-	template = ~/.gitmessage
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+        template = ~/.gitmessage

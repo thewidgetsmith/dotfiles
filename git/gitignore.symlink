@@ -1,3 +1,19 @@
-.DS_Store
-*~
+# Linux
+.directory
+.Trash-*
 *.swp
+*~
+
+# MacOS
+.DS_Store
+._*
+
+# Windows
+[Dd]esktop.ini
+$RECYCLE.BIN/
+Thumbs.db
+*.lnk
+
+# Developer Tools
+.idea/
+.vscode/
