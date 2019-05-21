@@ -1,14 +1,8 @@
 #!/bin/sh
 #
-# Homebrew
+# Homebrew BrewFile
 #
-# This installs some of the common dependencies needed (or at least desired)
-# using Homebrew.
-
-# TODO: determine whether Homebrew for Linux is any good.
-if [ "$(uname -s)" == "Linux" ]; then
-  exit 0
-fi
+# installs brew packages listed in Brewfile using homebrew.
 
 # Check for Homebrew
 if test ! $(which brew); then
