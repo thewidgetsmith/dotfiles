@@ -7,71 +7,92 @@
 
 set -e
 
-parentDirectory="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
-dotfilesDirectory="$(cd "$( dirname "$parentDirectory" )" && pwd -P)"
+export ZSH=$HOME/.dotfiles
+
+# Output colors
+GRN='\033[0;32m'
+RED='\033[0;31m'
+YLW='\033[1;33m'
+CLR='\033[0m'
 
 displayUsageAndExit() {
-	echo "dot -- dotfiles management"
-	echo ""
-	echo "Usage: dot [options]"
-	echo ""
-	echo "Options:"
-	echo "  -e, --edit    Open dotfiles directory for editing"
-	echo "  -h, --help    Show this help message and exit"
-	exit
+  echo "dot -- dotfiles management"
+  echo ""
+  echo "Usage: dot [options]"
+  echo ""
+  echo "Options:"
+  echo "  -e, --edit    Open dotfiles directory for editing"
+  echo "  -h, --help    Show this help message and exit"
+  exit
 }
 
 while test $# -gt 0; do
-	case "$1" in
-		"-h"|"--help")
-			displayUsageAndExit
-			;;
-		"-e"|"--edit")
-			exec "$EDITOR" "$dotfilesDirectory"
-			exit
-			;;
-		*)
-			echo "Invalid option: $1"
-			displayUsageAndExit
-			;;
-	esac
-	shift
+  case "$1" in
+    "-h"|"--help")
+      displayUsageAndExit
+      ;;
+    "-e"|"--edit")
+      exec "$EDITOR" "$ZSH"
+      exit
+      ;;
+    *)
+      echo "Invalid option: $1"
+      displayUsageAndExit
+      ;;
+  esac
+  shift
 done
 
-export ZSH=$HOME/.dotfiles
+if test "$(uname -s)" = "Darwin"; then
+  # if running on a Mac, install and setup homebrew.
+  echo "${YLW}installing macOS dependencies${CLR}"
 
-# Install homebrew
-$ZSH/homebrew/install.sh 2>&1
+  # Set macOS defaults
+  $ZSH/macos/set-defaults.sh
 
-if [ "$(uname -s)" == "Darwin" ]; then
-  	# if running on a Mac, install and setup homebrew.
-  	echo "installing macOS dependencies"
+  # Install homebrew
+  echo "${YLW}› install brew${CLR}"
+  $ZSH/pkg/install-homebrew.sh 2>&1
 
-  	# Set macOS defaults
-	$ZSH/macos/set-defaults.sh
+  # Upgrade homebrew
+  echo "${YLW}› brew update${CLR}"
+  brew update
 
-	# Upgrade homebrew
-	echo "› brew update"
-	brew update
+  # Run Homebrew through the Brewfile
+  echo "${YLW}› brew bundle${CLR}"
+  brew bundle --file=$ZSH/Brewfile
 
-	# Run Homebrew through the Brewfile
-	echo "› brew bundle"
-	brew bundle --file=$ZSH/Brewfile
+  echo "${YLW}› brew prune${CLR}"
+  brew prune
 
-	echo "› brew prune"
-	brew prune
+  echo "${YLW}› brew cleanup${CLR}"
+  brew cleanup \
+    && brew doctor \
+    && brew cask doctor
 
-	echo "› brew cleanup"
-	brew cleanup \
-		&& brew doctor \
-		&& brew cask doctor
+elif test "$(uname -s)" = "Linux"; then
+  # else if running on Linux, install.
+  echo "${YLW}installing Linux dependencies${CLR}"
 
-elif [ "$(uname -s)" == "Linux" ]; then
-  	# else if running on Linux, install.
-  	echo "installing Linux dependencies"
+  # Set Linux defaults
+  if test $(which gsettings); then
+    $ZSH/linux/set-defaults.sh
+  fi
 
-	# Set Linux defaults
-	$ZSH/linux/set-defaults.sh
+  if test $(which apt); then
+    # using apt package manager
+    echo "${YLW}› found Advanced Packaging Tool (APT)${CLR}"
+
+    # update apt
+    echo "${YLW}› apt update and upgrade${CLR}"
+    test "$UID" = 0 || $ZSH/pkg/apt-update-upgrade.sh 2>&1
+
+    # upgrade apt
+    echo "${YLW}› apt install from AptFile${CLR}"
+    test "$UID" = 0 || $ZSH/pkg/apt-install-aptfile.sh 2>&1
+
+  fi
+  # TODO: add support for Alpine APK
 fi
 
 cd "$(dirname "$0")/.."

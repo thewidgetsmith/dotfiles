@@ -1,8 +1,10 @@
-# Sets many Solus Linux settings to the way I like it.
+#!/bin/sh
+# Sets some Ubuntu Gnome3 settings to the way I like it.
 #
 # Run ./set-defaults.sh to apply settings.
 
-if [[ "$(lsb_release -d)" == *"Solus"* ]]; then
+if test "$(lsb_release -d)" = *"Ubuntu"*; then
     # If Solus linux, enable the Budgie dark theme.
-    gsettings set com.solus-project.budgie-panel dark-theme true
+    echo "foob bar"
+    #gsettings set com.solus-project.budgie-panel dark-theme true
 fi
