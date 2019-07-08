@@ -62,9 +62,6 @@ if test "$(uname -s)" = "Darwin"; then
   echo "${YLW}› brew bundle${CLR}"
   brew bundle --file=$ZSH/Brewfile
 
-  echo "${YLW}› brew prune${CLR}"
-  brew prune
-
   echo "${YLW}› brew cleanup${CLR}"
   brew cleanup \
     && brew doctor \

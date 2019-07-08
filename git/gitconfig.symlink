@@ -43,6 +43,3 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[user]
-	name = Richard Macdonald
-	email = richard.macdonald@usu.edu

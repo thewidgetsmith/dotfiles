@@ -1,8 +1,30 @@
-# Tools
-wget
+# CLI Tools
 curl
+fstrim
+git
 htop
+wget
 
+# Docker/Containerization
 docker.io
 docker-doc
 docker-compose
+
+# Mail/Exchange/Calendar
+evolution
+evolution-ews
+
+# Networking/VPN
+bridge-utils
+network-manager-openconnect
+network-manager-openconnect-gnome
+openconnect
+
+# Qemu/Virtualization
+libvirt-clients
+libvirt-daemon-system
+qemu-kvm
+virt-manager
+
+# ZZZ/Miscellaneous
+fonts-firacode
