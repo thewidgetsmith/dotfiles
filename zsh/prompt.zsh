@@ -1,4 +1,10 @@
+# Set up the prompt
 autoload colors && colors
+autoload -Uz promptinit
+promptinit
+
+# prompt adam1
+
 # cheers, @ehrenmurdick
 # http://github.com/ehrenmurdick/config/blob/master/zsh/prompt.zsh
 

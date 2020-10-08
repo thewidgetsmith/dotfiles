@@ -1,9 +1,10 @@
 # CLI Tools
 curl
-fstrim
 git
 htop
+util-linux
 wget
+xclip
 
 # Docker/Containerization
 docker.io

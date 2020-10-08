@@ -72,11 +72,9 @@ elif test "$(uname -s)" = "Linux"; then
   echo "${YLW}installing Linux dependencies${CLR}"
 
   # Set Linux defaults
-  if test $(which gsettings); then
-    $ZSH/linux/set-defaults.sh
-  fi
+  $ZSH/linux/set-defaults.sh
 
-  if test $(which apt); then
+  if test $(command -v apt); then
     # using apt package manager
     echo "${YLW}› found Advanced Packaging Tool (APT)${CLR}"
 
@@ -89,7 +87,7 @@ elif test "$(uname -s)" = "Linux"; then
     test "$UID" = 0 || $ZSH/pkg/apt-install-aptfile.sh 2>&1
 
   fi
-  # TODO: add support for Alpine APK
+
 fi
 
 cd "$(dirname "$0")/.."

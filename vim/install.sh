@@ -12,20 +12,19 @@ VIMPLUG_FILE="$HOME/.vim/autoload/plug.vim"
 
 # Check if vim-plug is installed
 if [ -d "$VIMPLUG_FILE" ]; then
-	# vim-plug installation found, update it
-	echo "  vim-plug install found. updating ..."
-  vim +PlugUpgrade +qall
-  
-	echo "  updating vim plugins ..."
-  vim +PlugInstall +qall  # install new or missing plugins
-	vim +PlugUpdate +qall 
+    # vim-plug installation found, update it
+    echo "  vim-plug install found. updating ..."
+    vim +PlugUpgrade +qall
+
+    echo "  updating vim plugins ..."
+    vim +PlugInstall +qall  # install new or missing plugins
+    vim +PlugUpdate +qall
 
 else
-	# vim-plug installation not found, install it
-	echo "  vim-plug installation not found. installing ..."
-  curl --silent -fLo $VIMPLUG_FILE --create-dirs $VIMPLUG_REPO
+    # vim-plug installation not found, install it
+    echo "  vim-plug installation not found. installing ..."
+    curl --silent -fLo $VIMPLUG_FILE --create-dirs $VIMPLUG_REPO
 
-	echo "  installing vim plugins ..."
-	vim +PlugInstall +qall 
-
+    echo "  installing vim plugins ..."
+    vim +PlugInstall +qall
 fi
