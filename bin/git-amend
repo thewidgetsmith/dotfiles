@@ -1,5 +1,17 @@
 #!/bin/sh
 #
-# Use the last commit message and amend your stuffs.
-
+# amend current working tree changes to the last commit, keep commit message the same
+#
+# Git Manpage
+#   --amend
+#     Replace the tip of the current branch by creating a new commit. The recorded tree is prepared as usual
+#     (including the effect of the -i and -o options and explicit pathspec), and the message from the original
+#     commit is used as the starting point, instead of an empty message, when no other message is specified from
+#     the command line via options such as -m, -F, -c, etc. The new commit has the same parents and author as
+#     the current one (the --reset-author option can countermand this).
+#
+#   -C <commit>, --reuse-message=<commit>
+#     Take an existing commit object, and reuse the log message and the authorship information (including the
+#     timestamp) when creating the commit.
+#
 git commit --amend -C HEAD

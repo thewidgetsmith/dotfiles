@@ -1,15 +1,22 @@
 # CLI Tools
 ack
 curl
+ffmpeg
 git
 htop
+hub
+nmap
 util-linux
+watchman
 wget
 xclip
+youtube-dl
+
+# Building/Packaging
+solbuild
 
 # Docker/Containerization
-docker.io
-docker-doc
+docker
 docker-compose
 
 # Mail/Exchange/Calendar
@@ -18,15 +25,19 @@ evolution-ews
 
 # Networking/VPN
 bridge-utils
-network-manager-openconnect
-network-manager-openconnect-gnome
-openconnect
 
 # Qemu/Virtualization
-libvirt-clients
-libvirt-daemon-system
-qemu-kvm
+libvirt
+qemu
 virt-manager
 
+# Remote Management
+## icedtea-web is used for executing JNLP files
+icedtea-web
+
+# Wine
+wine
+winetricks
+
 # ZZZ/Miscellaneous
-fonts-firacode
+font-firacode-ttf

@@ -1,3 +1,7 @@
+# Use modern completion system
+autoload -Uz compinit
+compinit
+
 #
 zstyle ':completion:*' auto-description 'specify: %d'
 

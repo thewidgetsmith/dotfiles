@@ -1,6 +1,13 @@
 #!/bin/sh
 #
-# I literally always forget how to flush my DNS settings on macOS (in large part
-# because it changes every damn update).
-
-sudo killall -HUP mDNSResponder
+# Flush DNS cache
+#
+if test "$(uname -s)" = "Darwin"; then
+  # MacOS
+  sudo killall -HUP mDNSResponder
+elif test "$(uname -s)" = "Linux"; then
+  # systemd
+  echo "TODO: additional research needed"
+  # sudo systemd-resolve --flush-caches
+  # sudo systemctl NetworkManager restart
+fi

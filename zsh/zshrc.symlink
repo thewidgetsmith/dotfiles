@@ -3,6 +3,7 @@ export ZSH=$HOME/.dotfiles
 
 # projects directory - `c [tab]` to
 export PROJECTS_DIR=~/Projects
+
 # sandbox directory - `s [tab]` to
 export SANDBOX_DIR=~/Sandbox
 
@@ -50,4 +51,3 @@ zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
-

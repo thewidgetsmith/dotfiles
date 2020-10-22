@@ -1,5 +1,7 @@
 #!/bin/sh
 #
-# Stage all unstaged.
-
+# Git Manpage:
+#   Update the index not only where the working tree has a file matching <pathspec> but also where the index
+#   already has an entry. This adds, modifies, and removes index entries to match the working tree.
+#
 git add -A

@@ -5,7 +5,7 @@ fpath=($ZSH/functions $fpath)
 
 autoload -U $ZSH/functions/*(:t)
 
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+# Keep 10k lines of history within the shell and save it to ~/.zsh_history:
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000

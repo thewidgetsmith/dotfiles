@@ -7,7 +7,7 @@
 
 echo "› install/update sdkman"
 
-SDKMAN_REPO="https://raw.githubusercontent.com/creationix/nvm/master/install.sh"
+SDKMAN_URL="https://get.sdkman.io"
 SDKMAN_FILE="$HOME/.sdkman/bin/sdkman-init.sh"
 
 # Check if SDKMAN is installed

@@ -4,7 +4,7 @@
 #
 # `dot` handles installation, updates, things like that. Run it periodically
 # to make sure you're on the latest and greatest.
-
+#
 set -e
 
 export ZSH=$HOME/.dotfiles
@@ -43,22 +43,18 @@ while test $# -gt 0; do
   shift
 done
 
+# detect operating system
 if test "$(uname -s)" = "Darwin"; then
-  # if running on a Mac, install and setup homebrew.
   echo "${YLW}installing macOS dependencies${CLR}"
 
-  # Set macOS defaults
   $ZSH/macos/set-defaults.sh
 
-  # Install homebrew
   echo "${YLW}› install brew${CLR}"
   $ZSH/pkg/install-homebrew.sh 2>&1
 
-  # Upgrade homebrew
   echo "${YLW}› brew update${CLR}"
   brew update
 
-  # Run Homebrew through the Brewfile
   echo "${YLW}› brew bundle${CLR}"
   brew bundle --file=$ZSH/Brewfile
 
@@ -68,28 +64,30 @@ if test "$(uname -s)" = "Darwin"; then
     && brew cask doctor
 
 elif test "$(uname -s)" = "Linux"; then
-  # else if running on Linux, install.
   echo "${YLW}installing Linux dependencies${CLR}"
 
-  # Set Linux defaults
   $ZSH/linux/set-defaults.sh
 
-  if test $(command -v apt); then
-    # using apt package manager
-    echo "${YLW}› found Advanced Packaging Tool (APT)${CLR}"
+  # detect package manager
+  if test $(command -v eopkg); then
+    echo "${YLW}› found Evolve OS Package tool (EOPKG)${CLR}"
+    echo "${YLW}› eopkg update-repo and upgrade${CLR}"
+    test "$UID" = 0 || $ZSH/pkg/eopkg-update-upgrade.sh 2>&1
 
-    # update apt
+    echo "${YLW}› eopkg install from SolusFile${CLR}"
+    test "$UID" = 0 || $ZSH/pkg/eopkg-install-solusfile.sh 2>&1
+
+  elif test $(command -v apt); then
+    echo "${YLW}› found Advanced Packaging tool (APT)${CLR}"
     echo "${YLW}› apt update and upgrade${CLR}"
     test "$UID" = 0 || $ZSH/pkg/apt-update-upgrade.sh 2>&1
 
-    # upgrade apt
     echo "${YLW}› apt install from AptFile${CLR}"
     test "$UID" = 0 || $ZSH/pkg/apt-install-aptfile.sh 2>&1
-
   fi
-
 fi
 
 cd "$(dirname "$0")/.."
-# find the installers and run them iteratively
+
+# find all installers and run them iteratively
 find . -name install.sh | while read installer ; do sh -c "${installer}" ; done
