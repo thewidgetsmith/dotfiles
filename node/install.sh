@@ -8,7 +8,7 @@ echo "› install/update node version manager"
 NVM_INSTALLER="https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh"
 NVM_FILE="$HOME/.nvm/nvm.sh"
 
-DEFAULT_NODE_VERSION="10.16.0" # LTS
+DEFAULT_NODE_VERSION="10.23.0" # LTS
 
 # Check NVM is installed
 if [ -d "$NVM_FILE" ]; then
