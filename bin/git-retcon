@@ -1,0 +1,51 @@
+#!/bin/zsh
+
+#
+# Usage: git-retcon FILE_NAME
+#        git-retcon .env.production
+#
+# Used for purging a file from the git commit history.
+#
+# Running this command within a git repository will do the following:
+# - rewrite the commit history (using git filter-branch)
+# - add the named file to the .gitignore file
+# - commit the .gitignore file changes
+#
+# Based on the process described by the GitHub documentation:
+# https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/removing-sensitive-data-from-a-repository
+#
+
+# Output colors
+GRN='\033[0;32m'
+RED='\033[0;31m'
+YLW='\033[1;33m'
+CLR='\033[0m'
+
+export FILE_NAME="$1"
+export FILTER_BRANCH_SQUELCH_WARNING=1
+
+if [[ $# -eq 1 ]]; then
+  echo "${YLW}remove $FILE_NAME from git repository${CLR}"
+  echo "${GRN}> rewrite commit history${CLR}"
+  git filter-branch --force --index-filter '
+    git rm --cached --ignore-unmatch "'$FILE_NAME'"
+  ' --prune-empty --tag-name-filter cat -- --all
+  echo "${GRN}> add $FILE_NAME to .gitignore${CLR}"
+  echo "\n$FILE_NAME\n" >> ./.gitignore
+  echo "${GRN}> commit change to .gitignore${CLR}"
+  git commit -m "adds $FILE_NAME to .gitignore"
+  echo "${GRN}> finished${CLR}"
+  echo ""
+  echo "Verify commit history contains desired changes then FORCE push to remote with:"
+  echo "    git push origin --force --all"
+  echo "    git push origin --force --tags"
+  echo ""
+  echo ${RED}"NOTE: Collaborators should rebase (not merge) onto new commit history${CLR}"
+else
+  echo "Usage: $0 FILE_NAME"
+  echo ""
+  echo "    FILE_NAME     The relative path to the file to be removed from the git commit history."
+fi
+
+unset FILTER_BRANCH_SQUELCH_WARNING
+unset FILE_NAME

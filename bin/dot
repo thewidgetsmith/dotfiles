@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 #
 # dot
 #
-# `dot` handles installation, updates, things like that. Run it periodically
-# to make sure you're on the latest and greatest.
+# `dot` handles package installation and updates.
+# Run `dot` periodically to install/update everything.
 #
 set -e
 
@@ -69,21 +69,15 @@ elif test "$(uname -s)" = "Linux"; then
   $ZSH/linux/set-defaults.sh
 
   # detect package manager
-  if test $(command -v eopkg); then
-    echo "${YLW}› found Evolve OS Package tool (EOPKG)${CLR}"
-    echo "${YLW}› eopkg update-repo and upgrade${CLR}"
-    test "$UID" = 0 || $ZSH/pkg/eopkg-update-upgrade.sh 2>&1
-
-    echo "${YLW}› eopkg install from SolusFile${CLR}"
-    test "$UID" = 0 || $ZSH/pkg/eopkg-install-solusfile.sh 2>&1
-
-  elif test $(command -v apt); then
+  if test $(command -v apt); then
     echo "${YLW}› found Advanced Packaging tool (APT)${CLR}"
     echo "${YLW}› apt update and upgrade${CLR}"
     test "$UID" = 0 || $ZSH/pkg/apt-update-upgrade.sh 2>&1
 
     echo "${YLW}› apt install from AptFile${CLR}"
     test "$UID" = 0 || $ZSH/pkg/apt-install-aptfile.sh 2>&1
+  else
+    echo "${RED}› no package manager detected${CLR}"
   fi
 fi
 

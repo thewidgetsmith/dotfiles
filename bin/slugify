@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 REMOVE="[,':()!\[\]]"
 REPLACE=""
@@ -19,7 +19,7 @@ for obj in *; do
 
   # make object name all lower case
   new="`echo $obj | tr '[A-Z]' '[a-z]'`"
-  
+
   # strip REMOVE characters from name
   new="${new//$REMOVE/}"
 
@@ -34,7 +34,6 @@ for obj in *; do
 
 #  mv -v "$f" "`echo ${f// /.} | tr '[A-Z]' '[a-z]'`"
 
-#  mv -v "$f" "${f//.-./.}"; 
+#  mv -v "$f" "${f//.-./.}";
 
 done
-

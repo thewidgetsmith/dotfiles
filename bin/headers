@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 #
 # Fetch HTTP headers from a given domain.
 #

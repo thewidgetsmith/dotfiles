@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 #
 # Process AptFile
 # installs packages listed in AptFile using APT.

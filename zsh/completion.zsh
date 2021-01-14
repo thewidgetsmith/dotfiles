@@ -1,6 +1,5 @@
 # Use modern completion system
-autoload -Uz compinit
-compinit
+autoload -Uz compinit && compinit
 
 #
 zstyle ':completion:*' auto-description 'specify: %d'
@@ -18,8 +17,13 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
 
 #
-eval "$(dircolors -b)"
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+if [ -x "$(command -v dircolors)" ]; then
+  eval "$(dircolors -b)"
+  zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+else
+  export CLICOLOR=1
+  zstyle ':completion:*:default' list-colors ''
+fi
 
 #
 zstyle ':completion:*' list-colors ''

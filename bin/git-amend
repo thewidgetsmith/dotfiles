@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 #
 # amend current working tree changes to the last commit, keep commit message the same
 #

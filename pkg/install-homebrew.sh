@@ -1,17 +1,12 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 #
 # Homebrew BrewFile
 #
-# installs brew packages listed in Brewfile using homebrew.
-
-# Check for Homebrew
-if test ! $(which brew); then
-  # Install the correct homebrew for each OS type
-  if test "$(uname)" = "Darwin"; then
+# For macOS, install Homebrew if not already installed.
+#
+if test "$(uname)" = "Darwin"; then
+  if test ! $(command -v brew); then
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-  elif test "$(expr substr $(uname -s) 1 5)" = "Linux"; then
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
   fi
 fi
 
