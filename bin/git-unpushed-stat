@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 #
 # Show the diffstat of everything you haven't pushed yet.
 #

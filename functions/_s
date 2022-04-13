@@ -1,4 +1,0 @@
-#compdef s
-_files -W $SANDBOX_DIR -/
-
-# See further documentation in `functions/s`.

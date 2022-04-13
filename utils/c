@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+#
+# Usage: c <tab>
+# Description: shortcut to the PROJECTS_DIR directory.
+# Autocompletes file paths on all $PROJECTS_DIR subdirectories
+# specified in `functions/_c`. Typically used like:
+#
+#    c foo<tab>/ba<tab>
+#
+# to quickly jump into $PROJECTS_DIR/foobar/baz.
+#
+cd "$PROJECTS_DIR/$1"

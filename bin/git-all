@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 #
 # Git Manpage:
 #   Update the index not only where the working tree has a file matching <pathspec> but also where the index

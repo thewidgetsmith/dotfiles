@@ -1,138 +1,161 @@
 #!/usr/bin/env zsh
 #
-# Dotfiles installer
+# The Widgetsmith Dotfiles installer script
+#
+# Installs the dotfiles and affiliated utilities.
+#
+# In order to create a more robust script and a better user experience, this
+# script inspired by the structure and strategy described by this blog post:
+# - https://betterdev.blog/minimal-safe-bash-script-template/
 #
 
-error () {
-  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
-  echo ''
+# set some execution parameters
+# `-E`          set traps to be inherited within shell functions, etc
+# `-e`          exit immediately upon a non-zero command exit code
+# `-u`          treat unset variables as an error and exit immediately
+# `-o pipefail` use the exit code of the rightmost failed command in a pipeline
+set -Eeuo pipefail
+
+# error handler
+trap cleanup SIGINT SIGTERM ERR EXIT
+
+# locate the script location to setup work with file paths relative to the
+# script location rather than the execution location.
+
+SCRIPT_NAME=$(basename "${(%):-%N}")
+DOTFILES_DIR=$(cd "$(dirname "${(%):-%N}")" &>/dev/null && pwd -P)
+DOTFILES_INC=$DOTFILES_DIR/inc
+DOTFILES_OUT=$DOTFILES_DIR/out
+
+GIT_CONFIG_INCLUDE_STRING=$(cat <<EOF
+# include gitconfig from dotfiles
+[include]
+        path = $DOTFILES_OUT/gitconfig.local
+
+# local settings and overrides below this line
+EOF
+)
+
+# include shared functions
+source $DOTFILES_DIR/lib/common.sh
+
+# functions
+
+cleanup() {
+  trap - SIGINT SIGTERM ERR EXIT
+  # script cleanup here
+}
+
+usage() {
+  cat <<EOF
+Usage: ./$SCRIPT_NAME [--help] [--debug] [--no-color] [--reinstall]
+
+Options:
+-h, --help      Print this help and exit
+-x, --debug     Print script debug info
+--no-color      Disable colored text output
+--reinstall     Remove installation and start over
+
+EOF
   exit
 }
 
-info () {
-  printf "\r  [ \033[00;34m..\033[0m ] $1\n"
+parse_params() {
+   while :; do
+    case "${1-}" in
+    -h | --help) usage ;;
+    -x | --debug) set -x ;;
+    --no-color) NO_COLOR=1 ;;
+    --reinstall) REINSTALL=1 ;;
+    -?*) die "unknown script option: $1"; ;;
+    *) break ;;
+    esac
+    shift
+  done
+
+  return 0
 }
 
-success () {
-  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+init_install () {
+  # make sure 'out' directory exists
+  if ! test -d "$DOTFILES_OUT"; then
+    mkdir -p $DOTFILES_OUT
+  fi
 }
 
-user () {
-  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
-}
+setup_gitconfig() {
+  local GIT_CONFIG_DIR="$DOTFILES_INC/git"
+  local GIT_CONFIG_OUT="$DOTFILES_OUT/gitconfig.local"
+  if test -f "${GIT_CONFIG_OUT}"; then
+    success "gitconfig already exists"
+  else
+    info "setup gitconfig"
+    local git_author_name
+    local git_author_email
+    local git_credential
 
-setup_gitconfig () {
-  if ! [ -f git/gitconfig.local.symlink ]; then
-    info 'setup gitconfig'
+    case "$(uname -s)" in
+    Darwin) git_credential="osxkeychain" ;;
+    Linux) git_credential="cache" ;;
+    *) die "unable to determine kernel name" ;;
+    esac
 
-    git_credential='cache'
-    if [ "$(uname -s)" == "Darwin" ]; then
-      git_credential='osxkeychain'
-    fi
+    vared -p "%B%F{cyan}What is your github author name?%f " -c git_author_name
+    vared -p "%B%F{cyan}What is your github author email?%f " -c git_author_email
 
-    user ' - what is your github author name?'
-    read -e git_authorname
-    user ' - what is your github author email?'
-    read -e git_authoremail
-
-    sed -e "s/AUTHORNAME/$git_authorname/g" \
-        -e "s/AUTHOREMAIL/$git_authoremail/g" \
+    sed -e "s/AUTHOR_NAME/$git_author_name/g" \
+        -e "s/AUTHOR_EMAIL/$git_author_email/g" \
         -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" \
-        git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
+        $GIT_CONFIG_DIR/gitconfig.template > $GIT_CONFIG_OUT
 
-    success 'gitconfig'
+    success "setup gitconfig complete"
+  fi
+
+  local GIT_CONFIG_LOCAL="$HOME/.gitconfig"
+  local GIT_INCLUDE_STR="path = $GIT_CONFIG_OUT"
+  if ! test -f "${GIT_CONFIG_LOCAL}"; then
+    info " › create .gitconfig file at $GIT_CONFIG_LOCAL"
+    touch $GIT_CONFIG_LOCAL
+  fi
+
+  if ! grep -q -F "$GIT_INCLUDE_STR" "$GIT_CONFIG_LOCAL"; then
+    info " › insert include into $GIT_CONFIG_LOCAL"
+    echo $GIT_CONFIG_INCLUDE_STRING | cat - $GIT_CONFIG_LOCAL > \
+      $DOTFILES_OUT/gitconfig.temp && \
+      mv $DOTFILES_OUT/gitconfig.temp $GIT_CONFIG_LOCAL
   fi
 }
 
-link_file () {
-  local src=$1 dst=$2
-  local action= backup= overwrite= skip=
-  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]; then
-    if [ "$overwrite_all" == "false" ] \
-        && [ "$backup_all" == "false" ] \
-        && [ "$skip_all" == "false" ]; then
+setup_dotfiles() {
+  info "install local configs"
 
-      local currentSrc="$(readlink $dst)"
+  local backup_all=false
+  local overwrite_all=false
+  local skip_all=false
 
-      if [ "$currentSrc" != "$src" ]; then
-
-        user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
-        [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
-        read -n 1 action
-
-        case "$action" in
-          o )
-            overwrite=true;;
-          O )
-            overwrite_all=true;;
-          b )
-            backup=true;;
-          B )
-            backup_all=true;;
-          s )
-            skip=true;;
-          S )
-            skip_all=true;;
-          * )
-            ;;
-        esac
-
-      else
-
-        skip=true;
-
-      fi
-    fi
-
-    overwrite=${overwrite:-$overwrite_all}
-    backup=${backup:-$backup_all}
-    skip=${skip:-$skip_all}
-
-    if [ "$overwrite" == "true" ]; then
-      rm -rf "$dst"
-      success "removed $dst"
-    fi
-
-    if [ "$backup" == "true" ]; then
-      mv "$dst" "${dst}.backup"
-      success "moved $dst to ${dst}.backup"
-    fi
-
-    if [ "$skip" == "true" ]; then
-      success "skipped $src"
-    fi
-  fi
-
-  if [ "$skip" != "true" ]; then  # "false" or empty
-    ln -s "$1" "$2"
-    success "linked $1 to $2"
-  fi
-}
-
-install_dotfiles () {
-  info 'installing dotfiles'
-
-  local overwrite_all=false backup_all=false skip_all=false
-
-  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*'); do
+  for src in $(find -H "$DOTFILES_INC" -maxdepth 2 -name '*.symlink'); do
     dst="$HOME/.$(basename "${src%.*}")"
     link_file "$src" "$dst"
   done
+
+  success "install local configs complete"
 }
 
+echo ""
 
-DOTFILES_ROOT=$(pwd -P)
+parse_params "$@"
+setup_colors
 
-set -e
-echo ''
+info "setup dotfiles"
 
+init_install
 setup_gitconfig
-install_dotfiles
+setup_dotfiles
 
-if source bin/dot | while read -r data; do info "$data"; done; then
-  success "dependencies installed"
-else
-  error "error installing dependencies"
-fi
+# if source bin/dot | while read -r data; do info "$data"; done; then
+#   success "dependencies installed"
+# else
+#   die "error installing dependencies"
+# fi
 
-echo '\n finished!'
+success "setup dotfiles complete"

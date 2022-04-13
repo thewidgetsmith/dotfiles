@@ -1,8 +1,8 @@
 export LSCOLORS="exfxcxdxbxegedabagacad"
 export CLICOLOR=true
 
-fpath=($ZSH/functions $fpath)
-autoload -U $ZSH/functions/*(:t)
+fpath=($ZSH/.local/utils $fpath)
+autoload -U $ZSH/.local/utils/*(:t)
 
 # keep 10k lines of history within the shell and save it to ~/.zsh_history:
 HISTFILE=~/.zsh_history

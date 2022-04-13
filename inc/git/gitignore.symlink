@@ -13,7 +13,3 @@
 $RECYCLE.BIN/
 Thumbs.db
 *.lnk
-
-# Developer Tools
-.idea/
-.vscode/
